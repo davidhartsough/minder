@@ -1,0 +1,6 @@
+{
+  "files.exclude": {
+    "babel.config.js": true,
+    "tsconfig.json": true
+  }
+}

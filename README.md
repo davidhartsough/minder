@@ -1,50 +1,26 @@
-# Welcome to your Expo app 👋
+# minder
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+### [Expo](https://expo.dev)
 
-## Get started
-
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
+```bash
+npx expo start
+```
 
 In the output, you'll find options to open the app in a
 
 - [development build](https://docs.expo.dev/develop/development-builds/introduction/)
 - [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
 - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- [Expo Go](https://expo.dev/go)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+//
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+https://reactnative.dev/docs/components-and-apis
+https://reactnative.dev/docs/flatlist?language=typescript#listfootercomponent
+https://docs.expo.dev/develop/file-based-routing/
+https://docs.expo.dev/router/advanced/stack/
+https://reactnavigation.org/docs/navigation-prop/#setoptions
+https://docs.expo.dev/router/navigating-pages/#imperative-navigation
+https://docs.expo.dev/ui-programming/react-native-styling-buttons/
+https://github.com/davidhartsough/react-native-simi-comps/blob/main/src/components/FAB.tsx
+https://github.com/davidhartsough/react-native-simi-comps-example-app/blob/main/src/index.tsx
