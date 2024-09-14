@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
-import { Link, useFocusEffect } from "expo-router";
 import { FlatList } from "react-native";
+import { Link, useFocusEffect } from "expo-router";
 import { List, getTitles } from "@/store/store";
 import MyView from "@/components/MyView";
 import SLoader from "@/components/SLoader";
@@ -8,6 +8,9 @@ import SView from "@/components/SView";
 import NewListLink from "@/components/NewListLink";
 import { Colors } from "@/constants/Colors";
 import { bottomBar } from "@/constants/constants";
+import { register } from "@/notifications";
+
+register();
 
 function Item({ item }: { item: List }) {
   return (

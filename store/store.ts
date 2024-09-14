@@ -114,3 +114,16 @@ export async function updateItems(id: string, itemsText: string) {
   await save(id, JSON.stringify(items));
   currentItems = items;
 }
+
+export async function saveNotificationIds(
+  listId: string,
+  notificationIds: string[]
+) {
+  await save(`${listId}__notifications`, JSON.stringify(notificationIds));
+}
+
+export async function getNotificationIds(listId: string) {
+  const ids = await read(`${listId}__notifications`);
+  if (!ids) return null;
+  return JSON.parse(ids) as string[];
+}
