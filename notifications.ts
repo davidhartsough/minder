@@ -1,5 +1,9 @@
 import * as Notifications from "expo-notifications";
-import { getList, saveNotificationIds } from "@/store/store";
+import {
+  getList,
+  getNotificationIds,
+  saveNotificationIds,
+} from "@/store/store";
 import { Schedule, getTimestamps } from "./constants/schedule";
 
 Notifications.setNotificationHandler({
@@ -38,6 +42,10 @@ async function schedule(title: string, body: string, timestamp: number) {
 export async function scheduleNotifications(id: string, sched: Schedule) {
   const list = await getList(id);
   if (!list) return;
+  const prevNotificationIds = await getNotificationIds(id);
+  if (prevNotificationIds) {
+    await clearForList(prevNotificationIds);
+  }
   const { title, items } = list;
   const ts = getTimestamps(sched, items.length);
   const notificationIds = await Promise.all(
