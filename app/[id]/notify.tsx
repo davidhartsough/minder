@@ -8,7 +8,7 @@ import SLoader from "@/components/SLoader";
 import MyText from "@/components/MyText";
 import MyView from "@/components/MyView";
 import FormActions from "@/components/FormActions";
-import { bottomBar } from "@/constants/constants";
+import { bottomBar } from "@/constants/styles";
 import {
   Period,
   periods,

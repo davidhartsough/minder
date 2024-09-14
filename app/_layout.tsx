@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import { stackScreenOptions } from "@/constants/constants";
+import { stackScreenOptions } from "@/constants/styles";
 
 export default function RootLayout() {
   return (

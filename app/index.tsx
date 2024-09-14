@@ -7,7 +7,7 @@ import SLoader from "@/components/SLoader";
 import SView from "@/components/SView";
 import NewListLink from "@/components/NewListLink";
 import { Colors } from "@/constants/Colors";
-import { bottomBar } from "@/constants/constants";
+import { bottomBar } from "@/constants/styles";
 import { register } from "@/notifications";
 
 register();

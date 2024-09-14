@@ -11,7 +11,7 @@ import SView from "@/components/SView";
 import SLoader from "@/components/SLoader";
 import MyText from "@/components/MyText";
 import MyView from "@/components/MyView";
-import { bottomBar, bottomLink } from "@/constants/constants";
+import { bottomBar, bottomLink } from "@/constants/styles";
 
 export default function ListScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
