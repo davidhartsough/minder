@@ -1,11 +1,6 @@
 import * as Notifications from "expo-notifications";
 import { getList, saveNotificationIds } from "@/store/store";
-import {
-  Schedule,
-  offsets,
-  getRandomTime,
-  getNextTargetTime,
-} from "./constants/schedule";
+import { Schedule, getTimestamps } from "./constants/schedule";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -32,10 +27,6 @@ function shuffleArray<T>(array: T[]): T[] {
     .map(({ item }) => item);
 }
 
-// function getRandomNum(max: number): number {
-//   return Math.floor(Math.random() * max) + 1;
-// }
-
 async function schedule(title: string, body: string, timestamp: number) {
   const notificationId = await Notifications.scheduleNotificationAsync({
     content: { title, body },
@@ -48,29 +39,10 @@ export async function scheduleNotifications(id: string, sched: Schedule) {
   const list = await getList(id);
   if (!list) return;
   const { title, items } = list;
-  const ntt = getNextTargetTime(sched);
-  const shuffledItems = shuffleArray(items);
-  const currMonth = ntt.getMonth();
-  const currDate = ntt.getDate();
-  const { period, start, end, date } = sched;
-  const offset = offsets[period];
-  const notifications = shuffledItems.map((body, i) => {
-    const nextTime = new Date(ntt);
-    if (period === "Monthly") {
-      nextTime.setMonth(currMonth + i);
-      const daysInMonth = new Date(
-        nextTime.getFullYear(),
-        nextTime.getMonth() + 1,
-        0
-      ).getDate();
-      nextTime.setDate(Math.min(date, daysInMonth));
-    } else {
-      nextTime.setDate(currDate + i * offset);
-    }
-    const ts = nextTime.getTime() + getRandomTime(start, end);
-    return schedule(title, body, ts);
-  });
-  const notificationIds = await Promise.all(notifications);
+  const ts = getTimestamps(sched, items.length);
+  const notificationIds = await Promise.all(
+    shuffleArray(items).map((body, i) => schedule(title, body, ts[i]))
+  );
   await saveNotificationIds(id, notificationIds);
 }
 

@@ -14,7 +14,7 @@ export type Schedule = {
   start: string;
   end: string;
 };
-export const offsets: Record<Period, number> = {
+const offsets: Record<Period, number> = {
   Daily: 1,
   Weekly: 7,
   Fortnightly: 14,
@@ -69,14 +69,10 @@ function getRandomNum(max: number) {
   return Math.floor(Math.random() * max) + 1;
 }
 
-export function getRandomTime(h1: string, h2: string): number {
+function getRandomTime(h1: string, h2: string): number {
   const hour1 = getHourFromLabel(h1);
   const hour2 = getHourFromLabel(h2);
   return getRandomNum(getTimeDiff(hour1, hour2));
-}
-
-function isTooLateToday(end: string): boolean {
-  return new Date().getHours() >= getHourFromLabel(end);
 }
 
 export function getNextTargetTime({
@@ -89,7 +85,9 @@ export function getNextTargetTime({
   const nt = new Date();
   nt.setHours(getHourFromLabel(start), 0, 0, 0);
   const currDateNum = nt.getDate();
-  if (isTooLateToday(end)) nt.setDate(currDateNum + 1);
+  if (new Date().getHours() >= getHourFromLabel(end)) {
+    nt.setDate(currDateNum + 1);
+  }
   if (period === "Weekly" || period === "Fortnightly") {
     const daysUntilNext = (weekdays.indexOf(weekday) - nt.getDay() + 7) % 7;
     nt.setDate(currDateNum + daysUntilNext);
@@ -103,4 +101,33 @@ export function getNextTargetTime({
     nt.setDate(Math.min(date, daysInMonth));
   }
   return nt;
+}
+
+export function getTimestamps(sched: Schedule, total: number): number[] {
+  const ntt = getNextTargetTime(sched);
+  const currMonth = ntt.getMonth();
+  const currDate = ntt.getDate();
+  const { period, start, end, date } = sched;
+  const offset = offsets[period];
+  const timestamps: number[] = [];
+  for (let i = 0; i < total; i++) {
+    const nextTime = new Date(ntt);
+    if (period === "Monthly") {
+      nextTime.setMonth(currMonth + i);
+      const daysInMonth = new Date(
+        nextTime.getFullYear(),
+        nextTime.getMonth() + 1,
+        0
+      ).getDate();
+      nextTime.setDate(Math.min(date, daysInMonth));
+    } else {
+      nextTime.setDate(currDate + i * offset);
+    }
+    const ts = nextTime.getTime() + getRandomTime(start, end);
+    timestamps.push(ts);
+  }
+  if (timestamps[0] <= Date.now()) {
+    timestamps[0] = Date.now() + 600000 + Math.floor(Math.random() * 600000);
+  }
+  return timestamps;
 }
