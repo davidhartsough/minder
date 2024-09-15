@@ -60,6 +60,7 @@ export default function RemindersScreen() {
             selectedValue={period}
             onValueChange={setPeriod}
             style={styles.picker}
+            dropdownIconColor="#fff"
           >
             {periods.map((p) => (
               <Picker.Item label={p} value={p} key={p} />
@@ -72,6 +73,7 @@ export default function RemindersScreen() {
               selectedValue={weekday}
               onValueChange={setWeekday}
               style={styles.picker}
+              dropdownIconColor="#fff"
             >
               {weekdays.map((w) => (
                 <Picker.Item label={`Every ${w}`} value={w} key={w} />
@@ -89,6 +91,7 @@ export default function RemindersScreen() {
                 selectedValue={start}
                 onValueChange={setStart}
                 style={styles.picker}
+                dropdownIconColor="#fff"
               >
                 {hours.map((h) => (
                   <Picker.Item label={h} value={h} key={`s${h}`} />
@@ -108,6 +111,7 @@ export default function RemindersScreen() {
                 selectedValue={end}
                 onValueChange={setEnd}
                 style={styles.picker}
+                dropdownIconColor="#fff"
               >
                 {hours.map((h) => (
                   <Picker.Item label={h} value={h} key={`e${h}`} />
