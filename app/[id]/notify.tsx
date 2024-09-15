@@ -13,7 +13,6 @@ import {
   Period,
   periods,
   weekdays,
-  nums,
   hours,
   Weekday,
 } from "@/constants/schedule";
@@ -34,7 +33,6 @@ export default function RemindersScreen() {
   const [title, setTitle] = useState<string | null>(null);
   const [period, setPeriod] = useState<Period>("Weekly");
   const [weekday, setWeekday] = useState<Weekday>("Tuesday");
-  const [date, setDate] = useState(1);
   const [start, setStart] = useState("10am");
   const [end, setEnd] = useState("7pm");
   const [loading, setLoading] = useState(false);
@@ -48,7 +46,7 @@ export default function RemindersScreen() {
   const submit = async () => {
     if (timingErr) return;
     setLoading(true);
-    await scheduleNotifications(id, { period, weekday, date, start, end });
+    await scheduleNotifications(id, { period, weekday, start, end });
     router.back();
   };
   return (
@@ -68,7 +66,7 @@ export default function RemindersScreen() {
             ))}
           </Picker>
         </MyView>
-        {(period === "Weekly" || period === "Fortnightly") && (
+        {period === "Weekly" && (
           <MyView marginVertical={8}>
             <Picker
               selectedValue={weekday}
@@ -76,28 +74,8 @@ export default function RemindersScreen() {
               style={styles.picker}
             >
               {weekdays.map((w) => (
-                <Picker.Item
-                  label={`Every ${
-                    period === "Fortnightly" ? "other " : ""
-                  }${w}`}
-                  value={w}
-                  key={w}
-                />
+                <Picker.Item label={`Every ${w}`} value={w} key={w} />
               ))}
-            </Picker>
-          </MyView>
-        )}
-        {period === "Monthly" && (
-          <MyView marginVertical={8}>
-            <Picker
-              selectedValue={date}
-              onValueChange={setDate}
-              style={styles.picker}
-            >
-              {nums.map((d) => (
-                <Picker.Item label={`On day ${d}`} value={d} key={`d${d}`} />
-              ))}
-              <Picker.Item label="On the last day" value={31} />
             </Picker>
           </MyView>
         )}

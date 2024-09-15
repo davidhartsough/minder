@@ -4,7 +4,7 @@ import {
   getNotificationIds,
   saveNotificationIds,
 } from "@/store/store";
-import { Schedule, getTimestamps } from "./constants/schedule";
+import { Period, Schedule, getTimestamps } from "./constants/schedule";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -39,15 +39,12 @@ async function schedule(title: string, body: string, timestamp: number) {
   return notificationId;
 }
 
-/*
-// TODO
-function chunk(n: number) {
-  // 730 daily
-  // 104 weekly
-  // 52 fortnightly
-  // 25 monthly
+function chunk(n: number, period: Period) {
+  const targetNum = period === "Daily" ? 730 : 104;
+  if (n >= targetNum) return { total: n, chunks: 1 };
+  const chunks = Math.ceil(targetNum / n);
+  return { total: n * chunks, chunks };
 }
-*/
 
 export async function scheduleNotifications(id: string, sched: Schedule) {
   const list = await getList(id);
@@ -57,14 +54,18 @@ export async function scheduleNotifications(id: string, sched: Schedule) {
     await clearForList(prevNotificationIds);
   }
   const { title, items } = list;
-  // TODO: const {total,chunks} = chunk(items.length);
-  const ts = getTimestamps(sched, items.length);
+  const { total, chunks } = chunk(items.length, sched.period);
+  const ts = getTimestamps(sched, total);
+  const finalSet: string[] = [];
+  for (let i = 0; i < chunks; i++) {
+    finalSet.push(...shuffleArray(items));
+  }
   const notificationIds = await Promise.all(
-    shuffleArray(items).map((body, i) => schedule(title, body, ts[i]))
+    finalSet.map((body, i) => schedule(title, body, ts[i]))
   );
   const lastNotificationId = await schedule(
     `"${title}" complete!`,
-    `→ You've made it through your "${title}" list! Want more? Head back to the list's "Reminders" screen and tap "Save" again to repeat.`,
+    `→ You've made it through your "${title}" list ${chunks} times! Want more? Head back to the list's "Reminders" screen and tap "Save" again to repeat.`,
     ts[ts.length - 1] + 600000
   );
   await saveNotificationIds(id, [...notificationIds, lastNotificationId]);
