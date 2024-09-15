@@ -9,6 +9,10 @@ export default function NewListScreen() {
       pathname: "/[id]",
       params: { id },
     });
+    router.push({
+      pathname: "/[id]/notify",
+      params: { id },
+    });
   };
   return <Form onSubmit={submit} />;
 }
