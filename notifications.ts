@@ -39,6 +39,16 @@ async function schedule(title: string, body: string, timestamp: number) {
   return notificationId;
 }
 
+/*
+// TODO
+function chunk(n: number) {
+  // 730 daily
+  // 104 weekly
+  // 52 fortnightly
+  // 25 monthly
+}
+*/
+
 export async function scheduleNotifications(id: string, sched: Schedule) {
   const list = await getList(id);
   if (!list) return;
@@ -47,11 +57,17 @@ export async function scheduleNotifications(id: string, sched: Schedule) {
     await clearForList(prevNotificationIds);
   }
   const { title, items } = list;
+  // TODO: const {total,chunks} = chunk(items.length);
   const ts = getTimestamps(sched, items.length);
   const notificationIds = await Promise.all(
     shuffleArray(items).map((body, i) => schedule(title, body, ts[i]))
   );
-  await saveNotificationIds(id, notificationIds);
+  const lastNotificationId = await schedule(
+    `"${title}" complete!`,
+    `→ You've made it through your "${title}" list! Want more? Head back to the list's "Reminders" screen and tap "Save" again to repeat.`,
+    ts[ts.length - 1] + 600000
+  );
+  await saveNotificationIds(id, [...notificationIds, lastNotificationId]);
 }
 
 async function clearForList(notificationIds: string[]) {
