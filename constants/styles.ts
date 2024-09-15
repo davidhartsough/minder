@@ -14,6 +14,7 @@ export const bottomBar: StyleProp<ViewStyle> = {
   left: 0,
   right: 0,
   zIndex: 3,
+  paddingHorizontal: 8,
   backgroundColor: "#000",
 };
 
