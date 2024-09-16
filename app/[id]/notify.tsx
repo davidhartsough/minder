@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { Picker } from "@react-native-picker/picker";
-import { getList } from "@/store/store";
+import { getList, getSchedule, saveSchedule } from "@/store/store";
 import SView from "@/components/SView";
 import SLoader from "@/components/SLoader";
 import MyText from "@/components/MyText";
 import MyView from "@/components/MyView";
 import FormActions from "@/components/FormActions";
-import { bottomBar } from "@/constants/styles";
+import { bottomBar, picker } from "@/constants/styles";
 import {
   Period,
   periods,
@@ -17,16 +16,6 @@ import {
   Weekday,
 } from "@/constants/schedule";
 import { scheduleNotifications } from "@/notifications";
-
-const styles = StyleSheet.create({
-  picker: {
-    color: "#fff",
-    backgroundColor: "#222",
-    borderColor: "#ddd",
-    borderWidth: 1,
-    borderRadius: 12,
-  },
-});
 
 export default function RemindersScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -38,7 +27,17 @@ export default function RemindersScreen() {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     getList(id).then((list) => {
-      if (list) setTitle(list.title);
+      if (list) {
+        getSchedule(id).then((sched) => {
+          if (sched) {
+            setPeriod(sched.period);
+            setWeekday(sched.weekday);
+            setStart(sched.start);
+            setEnd(sched.end);
+          }
+          setTitle(list.title);
+        });
+      }
     });
   }, [id]);
   if (title === null || loading) return <SLoader />;
@@ -46,7 +45,9 @@ export default function RemindersScreen() {
   const submit = async () => {
     if (timingErr) return;
     setLoading(true);
-    await scheduleNotifications(id, { period, weekday, start, end });
+    const newSched = { period, weekday, start, end };
+    await saveSchedule(id, newSched);
+    await scheduleNotifications(id, newSched);
     router.back();
   };
   return (
@@ -59,7 +60,7 @@ export default function RemindersScreen() {
           <Picker
             selectedValue={period}
             onValueChange={setPeriod}
-            style={styles.picker}
+            style={picker}
             dropdownIconColor="#fff"
           >
             {periods.map((p) => (
@@ -72,7 +73,7 @@ export default function RemindersScreen() {
             <Picker
               selectedValue={weekday}
               onValueChange={setWeekday}
-              style={styles.picker}
+              style={picker}
               dropdownIconColor="#fff"
             >
               {weekdays.map((w) => (
@@ -90,7 +91,7 @@ export default function RemindersScreen() {
               <Picker
                 selectedValue={start}
                 onValueChange={setStart}
-                style={styles.picker}
+                style={picker}
                 dropdownIconColor="#fff"
               >
                 {hours.map((h) => (
@@ -110,7 +111,7 @@ export default function RemindersScreen() {
               <Picker
                 selectedValue={end}
                 onValueChange={setEnd}
-                style={styles.picker}
+                style={picker}
                 dropdownIconColor="#fff"
               >
                 {hours.map((h) => (

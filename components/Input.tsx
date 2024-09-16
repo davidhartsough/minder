@@ -12,11 +12,6 @@ export default function Input(props: TextInputProps) {
           paddingVertical: 7,
           marginVertical: 4,
           fontSize: 16,
-          // borderColor: Colors.border,
-          // borderWidth: 1,
-          // borderRadius: 5,
-          // borderStyle: "solid",
-          // flexGrow: 1,
         },
         style,
       ]}

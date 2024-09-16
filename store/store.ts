@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Schedule } from "@/constants/schedule";
 
 export async function save(key: string, val: string) {
   await AsyncStorage.setItem(key, val);
@@ -115,11 +116,25 @@ export async function updateItems(id: string, itemsText: string) {
   currentItems = items;
 }
 
+export async function saveSchedule(listId: string, sched: Schedule) {
+  await save(`${listId}__schedule`, JSON.stringify(sched));
+}
+
+export async function getSchedule(listId: string) {
+  const sched = await read(`${listId}__schedule`);
+  if (!sched) return null;
+  return JSON.parse(sched) as Schedule;
+}
+
 export async function saveNotificationIds(
   listId: string,
   notificationIds: string[]
 ) {
   await save(`${listId}__notifications`, JSON.stringify(notificationIds));
+}
+
+export async function clearPrevNotifications(listId: string) {
+  await deleteItem(`${listId}__notifications`);
 }
 
 export async function getNotificationIds(listId: string) {

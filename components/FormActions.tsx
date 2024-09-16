@@ -13,14 +13,14 @@ export default function FormActions({
   submitDisabled?: boolean;
 }) {
   return (
-    <MyView row separate marginVertical={8}>
-      <TextButton onPress={cancel} text="Cancel" marginRight={4} />
+    <MyView row separate marginVertical={10}>
+      <TextButton onPress={cancel} text="Cancel" marginRight={5} />
       <TextButton
         type="primary"
         onPress={submit}
         text={submitText}
         disabled={submitDisabled}
-        marginLeft={4}
+        marginLeft={5}
       />
     </MyView>
   );

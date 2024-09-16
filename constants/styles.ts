@@ -14,8 +14,8 @@ export const bottomBar: StyleProp<ViewStyle> = {
   left: 0,
   right: 0,
   zIndex: 3,
-  paddingHorizontal: 8,
-  backgroundColor: "#000",
+  paddingHorizontal: 10,
+  backgroundColor: "#0e0e0e",
 };
 
 export const bottomLink: StyleProp<TextStyle> = {
@@ -38,4 +38,12 @@ export const bottomLink: StyleProp<TextStyle> = {
   textAlign: "center",
   color: Colors.text,
   maxHeight: 42,
+};
+
+export const picker: StyleProp<TextStyle> = {
+  color: "#fff",
+  backgroundColor: "#222",
+  borderColor: "#ddd",
+  borderWidth: 1,
+  borderRadius: 12,
 };

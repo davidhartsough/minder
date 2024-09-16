@@ -64,7 +64,7 @@ export default function Form({
           />
         </Pressable>
       </ScrollView>
-      <MyView style={{ backgroundColor: "#000" }}>
+      <MyView style={{ paddingHorizontal: 10, backgroundColor: "#0e0e0e" }}>
         <FormActions
           submit={submit}
           submitText="Save"

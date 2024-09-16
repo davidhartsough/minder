@@ -1,5 +1,6 @@
 import * as Notifications from "expo-notifications";
 import {
+  clearPrevNotifications,
   getList,
   getNotificationIds,
   saveNotificationIds,
@@ -52,6 +53,7 @@ export async function scheduleNotifications(id: string, sched: Schedule) {
   const prevNotificationIds = await getNotificationIds(id);
   if (prevNotificationIds) {
     await clearForList(prevNotificationIds);
+    await clearPrevNotifications(id);
   }
   const { title, items } = list;
   const { total, chunks } = chunk(items.length, sched.period);
